@@ -10,7 +10,6 @@ export interface Task {
   done: boolean;
 }
 
-let nextId: number = 3;
 const initialTasks: Task[] = [
   { id: 0, text: "Philosopher’s Path", done: true },
   { id: 1, text: "Visit the temple", done: false },
@@ -20,39 +19,13 @@ const initialTasks: Task[] = [
 export default function App() {
   const [tasks, dispatch] = useReducer(tasksReducer, initialTasks);
 
-  function handleAddTask(text: string) {
-    dispatch({
-      type: "added",
-      id: nextId++,
-      text: text,
-    });
-  }
-
-  function handleChangeTask(task: Task) {
-    dispatch({
-      type: "changed",
-      task: task,
-    });
-  }
-
-  function handleDeleteTask(taskId: number) {
-    dispatch({
-      type: "deleted",
-      id: taskId,
-    });
-  }
-
   return (
     <>
       <TasksContext.Provider value={tasks}>
         <TasksDispatchContext.Provider value={dispatch}>
           <h1>Day off in Tokyo</h1>
-          <AddTask onAddTask={handleAddTask} />
-          <TaskList
-            tasks={tasks}
-            onChangeTask={handleChangeTask}
-            onDeleteTask={handleDeleteTask}
-          />
+          <AddTask />
+          <TaskList />
         </TasksDispatchContext.Provider>
       </TasksContext.Provider>
     </>

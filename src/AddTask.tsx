@@ -1,12 +1,11 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { TasksDispatchContext } from "./TaskContext";
 
-export default function AddTask({
-  onAddTask,
-}: {
-  onAddTask: (text: string) => void;
-}) {
+let nextId = 3;
+
+export default function AddTask() {
   const [text, setText] = useState("");
-
+  const dispatch = useContext(TasksDispatchContext);
   return (
     <>
       <input
@@ -17,7 +16,11 @@ export default function AddTask({
       <button
         onClick={() => {
           setText("");
-          onAddTask(text);
+          dispatch({
+            type: "added",
+            id: nextId++,
+            text: text,
+          });
         }}
       >
         ADD
