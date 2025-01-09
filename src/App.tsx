@@ -2,6 +2,7 @@ import { useReducer } from "react";
 import { tasksReducer } from "./TaskReducer";
 import AddTask from "./AddTask";
 import TaskList from "./TaskList";
+import { TasksContext, TasksDispatchContext } from "./TaskContext";
 
 export interface Task {
   id: number;
@@ -43,13 +44,17 @@ export default function App() {
 
   return (
     <>
-      <h1>Day off in Tokyo</h1>
-      <AddTask onAddTask={handleAddTask} />
-      <TaskList
-        tasks={tasks}
-        onChangeTask={handleChangeTask}
-        onDeleteTask={handleDeleteTask}
-      />
+      <TasksContext.Provider value={tasks}>
+        <TasksDispatchContext.Provider value={dispatch}>
+          <h1>Day off in Tokyo</h1>
+          <AddTask onAddTask={handleAddTask} />
+          <TaskList
+            tasks={tasks}
+            onChangeTask={handleChangeTask}
+            onDeleteTask={handleDeleteTask}
+          />
+        </TasksDispatchContext.Provider>
+      </TasksContext.Provider>
     </>
   );
 }
