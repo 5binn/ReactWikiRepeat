@@ -1,37 +1,48 @@
-import { useState, useEffect } from "react";
-import { createConnection } from "./Chat";
+import { useDelayedValue } from "./useDelayedValue";
+import { usePointerPosition } from "./usePointerPosition";
 
-const serverUrl = "https://localhost:1234";
-
-interface ChatRoomProps {
-  roomId: string;
+export interface Point {
+  x: number;
+  y: number;
 }
 
-function ChatRoom({ roomId }: ChatRoomProps) {
-  let url: string = serverUrl;
-  useEffect(() => {
-    const connection = createConnection(roomId, url);
-    connection.connect();
-    return () => connection.disconnect();
-  }, [roomId]);
-
-  return <h1>Welcome to the {roomId} room!</h1>;
-}
-
-export default function App() {
-  const [roomId, setRoomId] = useState<string>("general");
+export default function Canvas() {
+  const pos1 = usePointerPosition();
+  const pos2 = useDelayedValue(pos1, 100);
+  const pos3 = useDelayedValue(pos2, 200);
+  const pos4 = useDelayedValue(pos3, 100);
+  const pos5 = useDelayedValue(pos4, 50);
   return (
     <>
-      <label>
-        Choose the chat room:{" "}
-        <select value={roomId} onChange={(e) => setRoomId(e.target.value)}>
-          <option value="general">general</option>
-          <option value="travel">travel</option>
-          <option value="music">music</option>
-        </select>
-      </label>
-      <hr />
-      <ChatRoom roomId={roomId} />
+      <Dot position={pos1} opacity={1} />
+      <Dot position={pos2} opacity={0.8} />
+      <Dot position={pos3} opacity={0.6} />
+      <Dot position={pos4} opacity={0.4} />
+      <Dot position={pos5} opacity={0.2} />
     </>
+  );
+}
+
+interface DotProps {
+  position: Point;
+  opacity: number;
+}
+
+function Dot({ position, opacity }: DotProps) {
+  return (
+    <div
+      style={{
+        position: "absolute",
+        backgroundColor: "skyblue",
+        borderRadius: "50%",
+        opacity,
+        transform: `translate(${position.x}px, ${position.y}px)`,
+        pointerEvents: "none",
+        left: -20,
+        top: -20,
+        width: 40,
+        height: 40,
+      }}
+    />
   );
 }
