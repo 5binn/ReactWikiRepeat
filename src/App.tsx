@@ -1,37 +1,37 @@
-import { useEffect, useRef, useState } from "react";
+import { useState, useEffect } from "react";
+import { createConnection } from "./Chat";
 
-interface VideoPlayerProps {
-  src: string;
-  isPlaying: boolean;
+const serverUrl = "https://localhost:1234";
+
+interface ChatRoomProps {
+  roomId: string;
 }
 
-function VideoPlayer({ src, isPlaying }: VideoPlayerProps) {
-  const ref = useRef<HTMLVideoElement>(null);
+function ChatRoom({ roomId }: ChatRoomProps) {
+  let url: string = serverUrl;
   useEffect(() => {
-    if (ref.current) {
-      if (isPlaying) {
-        ref.current.play();
-      } else {
-        ref.current.pause();
-      }
-    }
-  }, [isPlaying]);
-  return <video src={src} ref={ref} loop playsInline />;
+    const connection = createConnection(roomId, url);
+    connection.connect();
+    return () => connection.disconnect();
+  }, [roomId]);
+
+  return <h1>Welcome to the {roomId} room!</h1>;
 }
 
 export default function App() {
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [roomId, setRoomId] = useState<string>("general");
   return (
     <>
-      <a
-        onClick={() => setIsPlaying(!isPlaying)}
-        style={{ cursor: "pointer", textDecoration: "none" }}
-      >
-        <VideoPlayer
-          src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4"
-          isPlaying={isPlaying}
-        ></VideoPlayer>
-      </a>
+      <label>
+        Choose the chat room:{" "}
+        <select value={roomId} onChange={(e) => setRoomId(e.target.value)}>
+          <option value="general">general</option>
+          <option value="travel">travel</option>
+          <option value="music">music</option>
+        </select>
+      </label>
+      <hr />
+      <ChatRoom roomId={roomId} />
     </>
   );
 }
