@@ -1,6 +1,5 @@
 import { useContext, useState } from "react";
-import type { Task } from "./App";
-import { TasksContext, TasksDispatchContext } from "./TaskContext";
+import { TasksContext, TasksDispatchContext } from "./TasksProvider";
 
 export default function TaskList() {
   const tasks = useContext(TasksContext);
@@ -15,13 +14,12 @@ export default function TaskList() {
   );
 }
 
-interface TaskProps {
-  task: Task;
-}
-
-function Task({ task }: TaskProps) {
+function Task({ task }: any) {
   const [isEditing, setIsEditing] = useState(false);
   const dispatch = useContext(TasksDispatchContext);
+  if (!dispatch) {
+    throw new Error("Dispatch function is not available");
+  }
   let taskContent;
   if (isEditing) {
     taskContent = (

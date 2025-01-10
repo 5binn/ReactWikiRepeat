@@ -1,11 +1,14 @@
 import { useContext, useState } from "react";
-import { TasksDispatchContext } from "./TaskContext";
+import { TasksDispatchContext } from "./TasksProvider";
 
 let nextId = 3;
 
 export default function AddTask() {
   const [text, setText] = useState("");
   const dispatch = useContext(TasksDispatchContext);
+  if (!dispatch) {
+    throw new Error("Dispatch function is not available");
+  }
   return (
     <>
       <input
