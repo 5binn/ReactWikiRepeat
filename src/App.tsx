@@ -1,48 +1,33 @@
-import { useDelayedValue } from "./useDelayedValue";
-import { usePointerPosition } from "./usePointerPosition";
+import { useRef, useState } from "react";
 
-export interface Point {
-  x: number;
-  y: number;
-}
+export default function stopWatch() {
+  const [time, setTime] = useState<number | null>(null);
+  const [now, setNow] = useState<number | null>(null);
+  const intervalRef = useRef<number | undefined>(undefined);
 
-export default function Canvas() {
-  const pos1 = usePointerPosition();
-  const pos2 = useDelayedValue(pos1, 100);
-  const pos3 = useDelayedValue(pos2, 200);
-  const pos4 = useDelayedValue(pos3, 100);
-  const pos5 = useDelayedValue(pos4, 50);
+  function handleStart() {
+    setTime(Date.now());
+    setNow(Date.now());
+
+    handleStop();
+    intervalRef.current = setInterval(() => {
+      setNow(Date.now());
+    }, 10);
+  }
+
+  function handleStop() {
+    clearInterval(intervalRef.current);
+  }
+
+  let secondsPass = 0;
+  if (time != null && now != null) {
+    secondsPass = (now - time) / 1000;
+  }
   return (
     <>
-      <Dot position={pos1} opacity={1} />
-      <Dot position={pos2} opacity={0.8} />
-      <Dot position={pos3} opacity={0.6} />
-      <Dot position={pos4} opacity={0.4} />
-      <Dot position={pos5} opacity={0.2} />
+      <h1>TIME : {secondsPass.toFixed(3)}</h1>
+      <button onClick={handleStart}>START</button>
+      <button onClick={handleStop}>STOP</button>
     </>
-  );
-}
-
-interface DotProps {
-  position: Point;
-  opacity: number;
-}
-
-function Dot({ position, opacity }: DotProps) {
-  return (
-    <div
-      style={{
-        position: "absolute",
-        backgroundColor: "skyblue",
-        borderRadius: "50%",
-        opacity,
-        transform: `translate(${position.x}px, ${position.y}px)`,
-        pointerEvents: "none",
-        left: -20,
-        top: -20,
-        width: 40,
-        height: 40,
-      }}
-    />
   );
 }
