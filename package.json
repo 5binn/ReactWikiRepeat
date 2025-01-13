@@ -10,8 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+    "react": "^0.0.0-experimental-540efebc-20250112",
+    "react-dom": "^0.0.0-experimental-540efebc-20250112",
     "toastify": "^2.0.1",
     "toastify-js": "^1.12.0",
     "use-immer": "^0.11.0"
