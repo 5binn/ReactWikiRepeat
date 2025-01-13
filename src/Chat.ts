@@ -1,4 +1,4 @@
-export function createConnection(serverUrl: string, roomId: number) {
+export function createConnection(serverUrl: string, roomId: string) {
   return {
     connect() {
       console.log(
