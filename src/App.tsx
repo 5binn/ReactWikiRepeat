@@ -1,24 +1,29 @@
-import { useFormInput } from "./useFormInput";
+import { useOnlineStatus } from "./useOnlineStatus";
 
-function Hello({ fullName }: any) {
-  return <h1>Good morning, {fullName}</h1>;
+function StatusBar() {
+  const isOnline = useOnlineStatus();
+  return <h1>{isOnline ? "✅ Online" : "❌ Disconnected"}</h1>;
+}
+
+function SaveButton() {
+  const isOnline = useOnlineStatus();
+
+  function handleSaveClick() {
+    console.log("✅ Progress saved");
+  }
+
+  return (
+    <button disabled={!isOnline} onClick={handleSaveClick}>
+      {isOnline ? "Save progress" : "Reconnecting..."}
+    </button>
+  );
 }
 
 export default function App() {
-  const firstName = useFormInput("Mary");
-  const lastName = useFormInput("Poppins");
   return (
     <>
-      <label>
-        First Name:
-        <input {...firstName} />
-      </label>
-      <label>
-        Last Name:
-        <input {...lastName} />
-      </label>
-      <br />
-      <Hello fullName={firstName.value + " " + lastName.value} />
+      <SaveButton />
+      <StatusBar />
     </>
   );
 }
