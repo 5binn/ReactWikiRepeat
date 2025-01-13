@@ -46,6 +46,13 @@ ul {
   padding-left: 20px;
 }
 
-button { margin: 5px; }
-li { list-style-type: none; }
-ul, li { margin: 0; padding: 0; }
+label, button { display: block; margin-bottom: 20px; }
+html, body { min-height: 300px; }
+.welcome {
+  opacity: 0;
+  color: white;
+  padding: 50px;
+  text-align: center;
+  font-size: 50px;
+  background-image: radial-gradient(circle, rgba(63,94,251,1) 0%, rgba(252,70,107,1) 100%);
+}
