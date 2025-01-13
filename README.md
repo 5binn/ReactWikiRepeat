@@ -17,7 +17,7 @@ Node.js: JavaScript 기반 서버 및 백엔드 개발 시 필수.<br/>
 - Effect:
   컴포넌트가 렌더링될 때마다 React는 화면을 업데이트한 후 useEffect 내의 코드를 실행. 다시 말해, useEffect는 렌더링이 화면에 반영될 때까지 코드의 실행을 "지연"
 
-```
+```JS
 useEffect(() => {
   // 이것은 모든 렌더링 이후에 실행됩니다.
 });
